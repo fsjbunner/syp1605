@@ -10,7 +10,7 @@
   - name: Install networkmanager
     yum: name=NetworkManager-glib state=present
   - name: Configure networking
-    nmcli: conn_name="eno16777736" type=ethernet ip4=10.10.2.21/24 gw4=10.10.2.2 dns4=['8.8.8.8'] state=present autoconnect=yes
+    nmcli: conn_name="eno16777736" type=ethernet ip4=10.10.2.21/24 gw4=10.10.2.2 dns4=[8.8.8.8] state=present autoconnect=yes
   - name: Restart networking
     service: name=networking enabled=yes state=restarted
   - name: Install web services
