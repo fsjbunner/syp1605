@@ -25,5 +25,11 @@
     - wget
     - nano
     - curl
-
+  - name: Open firewall for port 80
+    firewalld: service=http permanent=true state=enabled
+  - name: SELinux Permissive
+    selinux: policy=targeted state=permissive
+  - name: Git clone WolfCMS
+    git: repo=https://github.com/wolfcms/wolfcms.git force=yes dest=/var/www/html
+    
 
