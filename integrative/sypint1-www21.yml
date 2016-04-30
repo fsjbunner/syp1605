@@ -30,6 +30,25 @@
   - name: SELinux Permissive
     selinux: policy=targeted state=permissive
   - name: Git clone WolfCMS
-    git: repo=https://github.com/wolfcms/wolfcms.git force=yes dest=/var/www/html
-    
+    git: repo=https://github.com/wolfcms/wolfcms.git force=yes dest=/var/www/html/wolfsqlite
+  - name: Create SQLite DB directory
+    command: mkdir /var/www/html/db
+  - name: Set directory permissions
+    command: chmod 777 /var/www/html/db
+  - name: Set write on config file
+    command: chmod 666 /var/www/html/wolfsqlite/config.php
+  - name: Set write on public
+    command: chmod 777 /var/www/html/wolfsqlite/public
+  - name: rename htaccess
+    command: mv /var/www/html/wolfsqlite/_.htaccess /var/www/html/wolfsqlite/.htaccess
+  - name: Update htaccess
+    lineinfile: dest=/var/www/html/wolfsqlite/.htaccess regexp="^#php_flag magic_quotes_gpc" line="php_flag magic_quotes_gpc off"
+  - name: Set rewrite path
+    lineinfile: dest=/var/www/html/wolfsqlite/.htaccess regexp="^RewriteBase /wolfcms/" line="RewriteBase /wolfsqlite/"
+  - name: Allow overrides in httpd config
+    lineinfile: dest=/etc/httpd/conf/httpd.conf regexp="^AllowOverride" insertafter="^<Directory \"/var/www/html\">" line="AllowOverride All"
+  - name: Restart httpd
+    service: name=httpd enabled=yes state=restarted
+  - debug: msg="Server configuration complete. You must run web installer at http://10.10.2.21/wolfsqlite to continue."
+
 
