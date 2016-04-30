@@ -32,13 +32,11 @@
   - name: Git clone WolfCMS
     git: repo=https://github.com/wolfcms/wolfcms.git force=yes dest=/var/www/html/wolfsqlite
   - name: Create SQLite DB directory
-    command: mkdir /var/www/html/db
-  - name: Set directory permissions
-    command: chmod 777 /var/www/html/db
+    file: path=/var/www/html/db state=directory mode=0777
   - name: Set write on config file
-    command: chmod 666 /var/www/html/wolfsqlite/config.php
+    file: path=/var/www/html/wolfsqlite/config.php mode=0666
   - name: Set write on public
-    command: chmod 777 /var/www/html/wolfsqlite/public
+    file: path=/var/www/html/wolfsqlite/public state=directory mode=0777
   - name: rename htaccess
     command: mv /var/www/html/wolfsqlite/_.htaccess /var/www/html/wolfsqlite/.htaccess
   - name: Update htaccess
