@@ -48,5 +48,6 @@
   - name: Restart httpd
     service: name=httpd enabled=yes state=restarted
   - debug: msg="Server configuration complete. You must run web installer at http://10.10.2.21/wolfsqlite to continue."
-
+  - name: Rebooting machine
+    command: shutdown -r now
 
