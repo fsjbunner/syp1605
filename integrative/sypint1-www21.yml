@@ -1,13 +1,16 @@
 # sypint1-www21.yml
 ---
-- hosts: localhost
+- hosts: 127.0.0.1
+  connection: local
   tasks:
   - name: Set hostname
     hostname: name=www21-apache.fsclass.localdomain
   - name: Update hosts
     replace: dest=/etc/hostname regexp='localhost.localdomain' replace='www21-apache.fsclass.localdomain'
+  - name: Install networkmanager
+    yum: name=NetworkManager-glib state=present
   - name: Configure networking
-    nmcli: conn_name="eno16777736" type=ethernet ip4=10.10.2.21/24 gw4=10.10.2.2 dns4=["8.8.8.8"] state=present autoconnect=yes
+    nmcli: conn_name="eno16777736" type=ethernet ip4=10.10.2.21/24 gw4=10.10.2.2 dns4=['8.8.8.8'] state=present autoconnect=yes
   - name: Restart networking
     service: name=networking enabled=yes state=restarted
   - name: Install web services
